@@ -2,6 +2,10 @@
 #define UTILS_H
 
 #include <SDL2/SDL.h>
+#ifndef NO_TTF
+	#include <SDL2/SDL_ttf.h>
+#endif
+#include <stdio.h>
 #include <string>
 
 namespace MyUtils{
@@ -50,6 +54,18 @@ struct Sprite{
     void draw(SDL_Renderer *gRenderer, SDL_Rect &drawRect); //устройство вывода и положение
 };
 
+/*
+* 	работа с шрифтами
+*/
+#ifndef NO_TTF
+class Text{
+	TTF_Font *font;
+public:
+	Text();
+	bool loadFont(std::string name, int size);	
+	SDL_Texture* printToTex(SDL_Renderer* gRenderer, std::string text, SDL_Color c);
+};
+#endif
 }
 
 #endif // UTILS_H

@@ -90,12 +90,12 @@ bool MyUtils::basicInit(SDL_Window *wnd, SDL_Renderer *rend, int WindowWidth, in
         return false;
     }
     wnd = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WindowWidth, WindowHeight, SDL_WINDOW_SHOWN );
-    if(!wnd){
+    if(wnd == NULL){
         printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
         return false;
     }
     rend = SDL_CreateRenderer( wnd, -1, SDL_RENDERER_ACCELERATED );
-    if(!rend){
+    if(rend == NULL){
         printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
         return false;
     }
@@ -108,3 +108,34 @@ void MyUtils::basicQuit(SDL_Window *wnd, SDL_Renderer *rend){
     SDL_DestroyWindow( wnd );
     SDL_Quit();
 }
+
+#ifndef NO_TTF
+MyUtils::Text::Text():font(NULL){}
+bool MyUtils::Text::loadFont(std::string name, int size){
+	font = TTF_OpenFont( name.c_str(), size );
+	if(font == NULL){
+		printf( "Failed to load %s font! SDL_ttf Error: %s\n",name.c_str(), TTF_GetError() );
+		return false;
+	}
+}
+
+SDL_Texture* MyUtils::Text::printToTex(SDL_Renderer* gRenderer, std::string text, SDL_Color c){
+	SDL_Texture* ret = NULL;
+	
+	if(font == NULL){
+		printf( "load font first!\n");
+		return ret;
+	}
+	SDL_Surface* textSurface = TTF_RenderText_Solid( font, text.c_str(), c ); 
+	if( textSurface == NULL ){
+		printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() ); 
+		return ret;
+	}
+	ret = SDL_CreateTextureFromSurface( gRenderer, textSurface );
+	if(ret == NULL){
+		printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
+		return 	ret;
+	}
+	return 	ret;
+}
+#endif
