@@ -9,7 +9,9 @@ SDL_Renderer *rend = NULL;
 
 MyUtils::Text text;
 
+
 int main(int argc, char* argv[]){
+
     if(!MyUtils::basicInit(wnd, rend, 300, 300)){
         return 1;
 	}
@@ -20,10 +22,10 @@ int main(int argc, char* argv[]){
 	if(rend == NULL){
 		printf("wtf?\n");
 	}
-	text.loadFont("data/font/arial.ttf", 12);
+	text.loadFont("arial.ttf", 12);
 	SDL_Color c = {255,0,0};
-	SDL_Texture *txtHello = text.printToTex(rend, "Hello world!", c);
-	
+	SDL_Texture *txtHello = text.printToTex(rend, u8"Привет!", c);
+
     SDL_Event e;
     bool exit = false;
 
@@ -36,7 +38,7 @@ int main(int argc, char* argv[]){
 
         SDL_SetRenderDrawColor( rend, 0x00, 0x00, 0x00, 0x00);
         SDL_RenderClear( rend );
-		
+
 		SDL_RenderCopyEx(rend, txtHello, NULL, NULL, 0, NULL, SDL_FLIP_NONE);
 
         SDL_RenderPresent( rend );

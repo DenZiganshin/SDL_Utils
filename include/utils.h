@@ -10,9 +10,9 @@
 
 namespace MyUtils{
 
-bool basicInit(SDL_Window *wnd, SDL_Renderer *rend, int WindowWidth, int WindowHeight);
+bool basicInit(SDL_Window* &wnd, SDL_Renderer* &rend, int WindowWidth, int WindowHeight);
 
-void basicQuit(SDL_Window *wnd, SDL_Renderer *rend);
+void basicQuit(SDL_Window* &wnd, SDL_Renderer* &rend);
 
 /*
 *	Обертка над SDL_Texture
@@ -62,7 +62,7 @@ class Text{
 	TTF_Font *font;
 public:
 	Text();
-	bool loadFont(std::string name, int size);	
+	bool loadFont(std::string name, int size);
 	SDL_Texture* printToTex(SDL_Renderer* gRenderer, std::string text, SDL_Color c);
 };
 #endif

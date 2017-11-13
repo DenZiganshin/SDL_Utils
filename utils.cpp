@@ -84,7 +84,7 @@ bool MyUtils::Rect::hitTest( int _x, int _y){
 }
 
 
-bool MyUtils::basicInit(SDL_Window *wnd, SDL_Renderer *rend, int WindowWidth, int WindowHeight){
+bool MyUtils::basicInit(SDL_Window* &wnd, SDL_Renderer* &rend, int WindowWidth, int WindowHeight){
     if(SDL_Init(SDL_INIT_VIDEO) < 0){
         printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
         return false;
@@ -103,7 +103,7 @@ bool MyUtils::basicInit(SDL_Window *wnd, SDL_Renderer *rend, int WindowWidth, in
     return true;
 }
 
-void MyUtils::basicQuit(SDL_Window *wnd, SDL_Renderer *rend){
+void MyUtils::basicQuit(SDL_Window* &wnd, SDL_Renderer* &rend){
     SDL_DestroyRenderer( rend );
     SDL_DestroyWindow( wnd );
     SDL_Quit();
@@ -117,18 +117,19 @@ bool MyUtils::Text::loadFont(std::string name, int size){
 		printf( "Failed to load %s font! SDL_ttf Error: %s\n",name.c_str(), TTF_GetError() );
 		return false;
 	}
+	return true;
 }
 
 SDL_Texture* MyUtils::Text::printToTex(SDL_Renderer* gRenderer, std::string text, SDL_Color c){
 	SDL_Texture* ret = NULL;
-	
+
 	if(font == NULL){
 		printf( "load font first!\n");
 		return ret;
 	}
-	SDL_Surface* textSurface = TTF_RenderText_Solid( font, text.c_str(), c ); 
+	SDL_Surface* textSurface = TTF_RenderUTF8_Solid( font, text.c_str(), c );
 	if( textSurface == NULL ){
-		printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() ); 
+		printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
 		return ret;
 	}
 	ret = SDL_CreateTextureFromSurface( gRenderer, textSurface );
